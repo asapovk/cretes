@@ -1,2 +1,2 @@
-export { default as createResolver } from './create'
+export { default as createParticipant } from './create'
 

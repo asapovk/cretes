@@ -10,18 +10,6 @@ export interface ParticipantCreateInput {
   email: string;
 }
 
-export interface ParticipantUpdateInput {
-  name?: Maybe<string>;
-
-  title?: Maybe<string>;
-
-  email?: Maybe<string>;
-}
-
-export interface ParticipantDeleteInput {
-  id: number;
-}
-
 export interface ParticipantWhereInput {
   /** Logical AND on all given filters. */
   AND?: Maybe<ParticipantWhereInput[]>;
@@ -182,13 +170,7 @@ export interface Participant extends Node {
 }
 
 export interface Mutation {
-  upload: Participant[];
-
-  create: Participant;
-
-  update: Participant;
-
-  delete: boolean;
+  createParticipant: Participant;
 }
 
 export interface Contribution extends Node {
@@ -209,17 +191,8 @@ export interface Contribution extends Node {
 // Arguments
 // ====================================================
 
-export interface UploadMutationArgs {
-  input: ParticipantCreateInput[];
-}
-export interface CreateMutationArgs {
+export interface CreateParticipantMutationArgs {
   input: ParticipantCreateInput;
-}
-export interface UpdateMutationArgs {
-  input: ParticipantUpdateInput;
-}
-export interface DeleteMutationArgs {
-  input: ParticipantDeleteInput;
 }
 export interface AuthorsContributionArgs {
   where?: Maybe<ParticipantWhereInput>;

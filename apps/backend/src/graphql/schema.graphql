@@ -8,9 +8,6 @@ type Query {
 }
 
 type Mutation {
-    upload(input: [ParticipantCreateInput!]!): [Participant!]!
-    
-    create(input: ParticipantCreateInput!): Participant! 
-    update(input: ParticipantUpdateInput!): Participant! 
-    delete(input: ParticipantDeleteInput!): Boolean! 
+ 
+    createParticipant(input: ParticipantCreateInput!): Participant! 
 }

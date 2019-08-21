@@ -53,7 +53,7 @@ const apolloServer = new ApolloServer({
         ...req,
         db: new Prisma({
             typeDefs: prismaTypeDefs,
-            endpoint: 'http://localhost:4466', // the endpoint of the Prisma DB service (value is set in .env)
+            endpoint: 'http://localhost:4467', // the endpoint of the Prisma DB service (value is set in .env)
             secret: '', // taken from database/prisma.yml (value is set in .env)
             debug: true, // log all GraphQL queries & mutations
         }),
