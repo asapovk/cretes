@@ -1,1 +1,1 @@
-export { default as words } from './words';
+export { default as participants } from './participants';

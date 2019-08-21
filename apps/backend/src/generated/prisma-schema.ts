@@ -2,7 +2,11 @@
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-export const typeDefs = /* GraphQL */ `type AggregateWord {
+export const typeDefs = /* GraphQL */ `type AggregateContribution {
+  count: Int!
+}
+
+type AggregateParticipant {
   count: Int!
 }
 
@@ -10,15 +14,158 @@ type BatchPayload {
   count: Long!
 }
 
+type Contribution {
+  id: ID!
+  speaker: Participant
+  authors(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Participant!]
+  title: String
+  oral: Boolean
+  abstract: String
+}
+
+type ContributionConnection {
+  pageInfo: PageInfo!
+  edges: [ContributionEdge]!
+  aggregate: AggregateContribution!
+}
+
+input ContributionCreateInput {
+  id: ID
+  speaker: ParticipantCreateOneInput
+  authors: ParticipantCreateManyInput
+  title: String
+  oral: Boolean
+  abstract: String
+}
+
+type ContributionEdge {
+  node: Contribution!
+  cursor: String!
+}
+
+enum ContributionOrderByInput {
+  id_ASC
+  id_DESC
+  title_ASC
+  title_DESC
+  oral_ASC
+  oral_DESC
+  abstract_ASC
+  abstract_DESC
+}
+
+type ContributionPreviousValues {
+  id: ID!
+  title: String
+  oral: Boolean
+  abstract: String
+}
+
+type ContributionSubscriptionPayload {
+  mutation: MutationType!
+  node: Contribution
+  updatedFields: [String!]
+  previousValues: ContributionPreviousValues
+}
+
+input ContributionSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ContributionWhereInput
+  AND: [ContributionSubscriptionWhereInput!]
+  OR: [ContributionSubscriptionWhereInput!]
+  NOT: [ContributionSubscriptionWhereInput!]
+}
+
+input ContributionUpdateInput {
+  speaker: ParticipantUpdateOneInput
+  authors: ParticipantUpdateManyInput
+  title: String
+  oral: Boolean
+  abstract: String
+}
+
+input ContributionUpdateManyMutationInput {
+  title: String
+  oral: Boolean
+  abstract: String
+}
+
+input ContributionWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  speaker: ParticipantWhereInput
+  authors_every: ParticipantWhereInput
+  authors_some: ParticipantWhereInput
+  authors_none: ParticipantWhereInput
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  oral: Boolean
+  oral_not: Boolean
+  abstract: String
+  abstract_not: String
+  abstract_in: [String!]
+  abstract_not_in: [String!]
+  abstract_lt: String
+  abstract_lte: String
+  abstract_gt: String
+  abstract_gte: String
+  abstract_contains: String
+  abstract_not_contains: String
+  abstract_starts_with: String
+  abstract_not_starts_with: String
+  abstract_ends_with: String
+  abstract_not_ends_with: String
+  AND: [ContributionWhereInput!]
+  OR: [ContributionWhereInput!]
+  NOT: [ContributionWhereInput!]
+}
+
+input ContributionWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Mutation {
-  createWord(data: WordCreateInput!): Word!
-  updateWord(data: WordUpdateInput!, where: WordWhereUniqueInput!): Word
-  updateManyWords(data: WordUpdateManyMutationInput!, where: WordWhereInput): BatchPayload!
-  upsertWord(where: WordWhereUniqueInput!, create: WordCreateInput!, update: WordUpdateInput!): Word!
-  deleteWord(where: WordWhereUniqueInput!): Word
-  deleteManyWords(where: WordWhereInput): BatchPayload!
+  createContribution(data: ContributionCreateInput!): Contribution!
+  updateContribution(data: ContributionUpdateInput!, where: ContributionWhereUniqueInput!): Contribution
+  updateManyContributions(data: ContributionUpdateManyMutationInput!, where: ContributionWhereInput): BatchPayload!
+  upsertContribution(where: ContributionWhereUniqueInput!, create: ContributionCreateInput!, update: ContributionUpdateInput!): Contribution!
+  deleteContribution(where: ContributionWhereUniqueInput!): Contribution
+  deleteManyContributions(where: ContributionWhereInput): BatchPayload!
+  createParticipant(data: ParticipantCreateInput!): Participant!
+  updateParticipant(data: ParticipantUpdateInput!, where: ParticipantWhereUniqueInput!): Participant
+  updateManyParticipants(data: ParticipantUpdateManyMutationInput!, where: ParticipantWhereInput): BatchPayload!
+  upsertParticipant(where: ParticipantWhereUniqueInput!, create: ParticipantCreateInput!, update: ParticipantUpdateInput!): Participant!
+  deleteParticipant(where: ParticipantWhereUniqueInput!): Participant
+  deleteManyParticipants(where: ParticipantWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -38,63 +185,60 @@ type PageInfo {
   endCursor: String
 }
 
-type Query {
-  word(where: WordWhereUniqueInput!): Word
-  words(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word]!
-  wordsConnection(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WordConnection!
-  node(id: ID!): Node
-}
-
-type Subscription {
-  word(where: WordSubscriptionWhereInput): WordSubscriptionPayload
-}
-
-type Word {
+type Participant {
   id: ID!
-  translation: String!
-  writing: String!
-  synonims(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word!]
+  name: String!
+  title: String
+  email: String!
 }
 
-type WordConnection {
+type ParticipantConnection {
   pageInfo: PageInfo!
-  edges: [WordEdge]!
-  aggregate: AggregateWord!
+  edges: [ParticipantEdge]!
+  aggregate: AggregateParticipant!
 }
 
-input WordCreateInput {
+input ParticipantCreateInput {
   id: ID
-  translation: String!
-  writing: String!
-  synonims: WordCreateManyInput
+  name: String!
+  title: String
+  email: String!
 }
 
-input WordCreateManyInput {
-  create: [WordCreateInput!]
-  connect: [WordWhereUniqueInput!]
+input ParticipantCreateManyInput {
+  create: [ParticipantCreateInput!]
+  connect: [ParticipantWhereUniqueInput!]
 }
 
-type WordEdge {
-  node: Word!
+input ParticipantCreateOneInput {
+  create: ParticipantCreateInput
+  connect: ParticipantWhereUniqueInput
+}
+
+type ParticipantEdge {
+  node: Participant!
   cursor: String!
 }
 
-enum WordOrderByInput {
+enum ParticipantOrderByInput {
   id_ASC
   id_DESC
-  translation_ASC
-  translation_DESC
-  writing_ASC
-  writing_DESC
+  name_ASC
+  name_DESC
+  title_ASC
+  title_DESC
+  email_ASC
+  email_DESC
 }
 
-type WordPreviousValues {
+type ParticipantPreviousValues {
   id: ID!
-  translation: String!
-  writing: String!
+  name: String!
+  title: String
+  email: String!
 }
 
-input WordScalarWhereInput {
+input ParticipantScalarWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -109,108 +253,138 @@ input WordScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  translation: String
-  translation_not: String
-  translation_in: [String!]
-  translation_not_in: [String!]
-  translation_lt: String
-  translation_lte: String
-  translation_gt: String
-  translation_gte: String
-  translation_contains: String
-  translation_not_contains: String
-  translation_starts_with: String
-  translation_not_starts_with: String
-  translation_ends_with: String
-  translation_not_ends_with: String
-  writing: String
-  writing_not: String
-  writing_in: [String!]
-  writing_not_in: [String!]
-  writing_lt: String
-  writing_lte: String
-  writing_gt: String
-  writing_gte: String
-  writing_contains: String
-  writing_not_contains: String
-  writing_starts_with: String
-  writing_not_starts_with: String
-  writing_ends_with: String
-  writing_not_ends_with: String
-  AND: [WordScalarWhereInput!]
-  OR: [WordScalarWhereInput!]
-  NOT: [WordScalarWhereInput!]
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  AND: [ParticipantScalarWhereInput!]
+  OR: [ParticipantScalarWhereInput!]
+  NOT: [ParticipantScalarWhereInput!]
 }
 
-type WordSubscriptionPayload {
+type ParticipantSubscriptionPayload {
   mutation: MutationType!
-  node: Word
+  node: Participant
   updatedFields: [String!]
-  previousValues: WordPreviousValues
+  previousValues: ParticipantPreviousValues
 }
 
-input WordSubscriptionWhereInput {
+input ParticipantSubscriptionWhereInput {
   mutation_in: [MutationType!]
   updatedFields_contains: String
   updatedFields_contains_every: [String!]
   updatedFields_contains_some: [String!]
-  node: WordWhereInput
-  AND: [WordSubscriptionWhereInput!]
-  OR: [WordSubscriptionWhereInput!]
-  NOT: [WordSubscriptionWhereInput!]
+  node: ParticipantWhereInput
+  AND: [ParticipantSubscriptionWhereInput!]
+  OR: [ParticipantSubscriptionWhereInput!]
+  NOT: [ParticipantSubscriptionWhereInput!]
 }
 
-input WordUpdateDataInput {
-  translation: String
-  writing: String
-  synonims: WordUpdateManyInput
+input ParticipantUpdateDataInput {
+  name: String
+  title: String
+  email: String
 }
 
-input WordUpdateInput {
-  translation: String
-  writing: String
-  synonims: WordUpdateManyInput
+input ParticipantUpdateInput {
+  name: String
+  title: String
+  email: String
 }
 
-input WordUpdateManyDataInput {
-  translation: String
-  writing: String
+input ParticipantUpdateManyDataInput {
+  name: String
+  title: String
+  email: String
 }
 
-input WordUpdateManyInput {
-  create: [WordCreateInput!]
-  update: [WordUpdateWithWhereUniqueNestedInput!]
-  upsert: [WordUpsertWithWhereUniqueNestedInput!]
-  delete: [WordWhereUniqueInput!]
-  connect: [WordWhereUniqueInput!]
-  set: [WordWhereUniqueInput!]
-  disconnect: [WordWhereUniqueInput!]
-  deleteMany: [WordScalarWhereInput!]
-  updateMany: [WordUpdateManyWithWhereNestedInput!]
+input ParticipantUpdateManyInput {
+  create: [ParticipantCreateInput!]
+  update: [ParticipantUpdateWithWhereUniqueNestedInput!]
+  upsert: [ParticipantUpsertWithWhereUniqueNestedInput!]
+  delete: [ParticipantWhereUniqueInput!]
+  connect: [ParticipantWhereUniqueInput!]
+  set: [ParticipantWhereUniqueInput!]
+  disconnect: [ParticipantWhereUniqueInput!]
+  deleteMany: [ParticipantScalarWhereInput!]
+  updateMany: [ParticipantUpdateManyWithWhereNestedInput!]
 }
 
-input WordUpdateManyMutationInput {
-  translation: String
-  writing: String
+input ParticipantUpdateManyMutationInput {
+  name: String
+  title: String
+  email: String
 }
 
-input WordUpdateManyWithWhereNestedInput {
-  where: WordScalarWhereInput!
-  data: WordUpdateManyDataInput!
+input ParticipantUpdateManyWithWhereNestedInput {
+  where: ParticipantScalarWhereInput!
+  data: ParticipantUpdateManyDataInput!
 }
 
-input WordUpdateWithWhereUniqueNestedInput {
-  where: WordWhereUniqueInput!
-  data: WordUpdateDataInput!
+input ParticipantUpdateOneInput {
+  create: ParticipantCreateInput
+  update: ParticipantUpdateDataInput
+  upsert: ParticipantUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ParticipantWhereUniqueInput
 }
 
-input WordUpsertWithWhereUniqueNestedInput {
-  where: WordWhereUniqueInput!
-  update: WordUpdateDataInput!
-  create: WordCreateInput!
+input ParticipantUpdateWithWhereUniqueNestedInput {
+  where: ParticipantWhereUniqueInput!
+  data: ParticipantUpdateDataInput!
 }
 
-input WordWhereInput {
+input ParticipantUpsertNestedInput {
+  update: ParticipantUpdateDataInput!
+  create: ParticipantCreateInput!
+}
+
+input ParticipantUpsertWithWhereUniqueNestedInput {
+  where: ParticipantWhereUniqueInput!
+  update: ParticipantUpdateDataInput!
+  create: ParticipantCreateInput!
+}
+
+input ParticipantWhereInput {
   id: ID
   id_not: ID
   id_in: [ID!]
@@ -225,43 +399,69 @@ input WordWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  translation: String
-  translation_not: String
-  translation_in: [String!]
-  translation_not_in: [String!]
-  translation_lt: String
-  translation_lte: String
-  translation_gt: String
-  translation_gte: String
-  translation_contains: String
-  translation_not_contains: String
-  translation_starts_with: String
-  translation_not_starts_with: String
-  translation_ends_with: String
-  translation_not_ends_with: String
-  writing: String
-  writing_not: String
-  writing_in: [String!]
-  writing_not_in: [String!]
-  writing_lt: String
-  writing_lte: String
-  writing_gt: String
-  writing_gte: String
-  writing_contains: String
-  writing_not_contains: String
-  writing_starts_with: String
-  writing_not_starts_with: String
-  writing_ends_with: String
-  writing_not_ends_with: String
-  synonims_every: WordWhereInput
-  synonims_some: WordWhereInput
-  synonims_none: WordWhereInput
-  AND: [WordWhereInput!]
-  OR: [WordWhereInput!]
-  NOT: [WordWhereInput!]
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  AND: [ParticipantWhereInput!]
+  OR: [ParticipantWhereInput!]
+  NOT: [ParticipantWhereInput!]
 }
 
-input WordWhereUniqueInput {
+input ParticipantWhereUniqueInput {
   id: ID
+}
+
+type Query {
+  contribution(where: ContributionWhereUniqueInput!): Contribution
+  contributions(where: ContributionWhereInput, orderBy: ContributionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Contribution]!
+  contributionsConnection(where: ContributionWhereInput, orderBy: ContributionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ContributionConnection!
+  participant(where: ParticipantWhereUniqueInput!): Participant
+  participants(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Participant]!
+  participantsConnection(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParticipantConnection!
+  node(id: ID!): Node
+}
+
+type Subscription {
+  contribution(where: ContributionSubscriptionWhereInput): ContributionSubscriptionPayload
+  participant(where: ParticipantSubscriptionWhereInput): ParticipantSubscriptionPayload
 }
 `

@@ -1,7 +1,11 @@
-# source: http://localhost:4466
-# timestamp: Mon Aug 05 2019 22:22:55 GMT+0300 (Moscow Standard Time)
+# source: http://localhost:4467
+# timestamp: Wed Aug 21 2019 12:51:22 GMT+0300 (Eastern European Summer Time)
 
-type AggregateWord {
+type AggregateContribution {
+  count: Int!
+}
+
+type AggregateParticipant {
   count: Int!
 }
 
@@ -10,126 +14,77 @@ type BatchPayload {
   count: Long!
 }
 
-"""
-The `Long` scalar type represents non-fractional signed whole numeric values.
-Long can represent values between -(2^63) and 2^63 - 1.
-"""
-scalar Long
-
-type Mutation {
-  createWord(data: WordCreateInput!): Word!
-  updateWord(data: WordUpdateInput!, where: WordWhereUniqueInput!): Word
-  deleteWord(where: WordWhereUniqueInput!): Word
-  upsertWord(where: WordWhereUniqueInput!, create: WordCreateInput!, update: WordUpdateInput!): Word!
-  updateManyWords(data: WordUpdateManyMutationInput!, where: WordWhereInput): BatchPayload!
-  deleteManyWords(where: WordWhereInput): BatchPayload!
-}
-
-enum MutationType {
-  CREATED
-  UPDATED
-  DELETED
-}
-
-"""An object with an ID"""
-interface Node {
-  """The id of the object."""
+type Contribution implements Node {
   id: ID!
-}
-
-"""Information about pagination in a connection."""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
-  startCursor: String
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: String
-}
-
-type Query {
-  words(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Word]!
-  word(where: WordWhereUniqueInput!): Word
-  wordsConnection(where: WordWhereInput, orderBy: WordOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): WordConnection!
-
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-}
-
-type Subscription {
-  word(where: WordSubscriptionWhereInput): WordSubscriptionPayload
-}
-
-type Word implements Node {
-  id: ID!
-  translation: String!
-  writing: String!
+  speaker: Participant
+  authors(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Participant!]
+  title: String
+  oral: Boolean
+  abstract: String
 }
 
 """A connection to a list of items."""
-type WordConnection {
+type ContributionConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [WordEdge]!
-  aggregate: AggregateWord!
+  edges: [ContributionEdge]!
+  aggregate: AggregateContribution!
 }
 
-input WordCreateInput {
+input ContributionCreateInput {
   id: ID
-  translation: String!
-  writing: String!
+  title: String
+  oral: Boolean
+  abstract: String
+  speaker: ParticipantCreateOneInput
+  authors: ParticipantCreateManyInput
 }
 
 """An edge in a connection."""
-type WordEdge {
+type ContributionEdge {
   """The item at the end of the edge."""
-  node: Word!
+  node: Contribution!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum WordOrderByInput {
+enum ContributionOrderByInput {
   id_ASC
   id_DESC
-  translation_ASC
-  translation_DESC
-  writing_ASC
-  writing_DESC
+  title_ASC
+  title_DESC
+  oral_ASC
+  oral_DESC
+  abstract_ASC
+  abstract_DESC
 }
 
-type WordPreviousValues {
+type ContributionPreviousValues {
   id: ID!
-  translation: String!
-  writing: String!
+  title: String
+  oral: Boolean
+  abstract: String
 }
 
-type WordSubscriptionPayload {
+type ContributionSubscriptionPayload {
   mutation: MutationType!
-  node: Word
+  node: Contribution
   updatedFields: [String!]
-  previousValues: WordPreviousValues
+  previousValues: ContributionPreviousValues
 }
 
-input WordSubscriptionWhereInput {
+input ContributionSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [WordSubscriptionWhereInput!]
+  AND: [ContributionSubscriptionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [WordSubscriptionWhereInput!]
+  OR: [ContributionSubscriptionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [WordSubscriptionWhereInput!]
+  NOT: [ContributionSubscriptionWhereInput!]
 
   """The subscription event gets dispatched when it's listed in mutation_in"""
   mutation_in: [MutationType!]
@@ -148,28 +103,32 @@ input WordSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: WordWhereInput
+  node: ContributionWhereInput
 }
 
-input WordUpdateInput {
-  translation: String
-  writing: String
+input ContributionUpdateInput {
+  title: String
+  oral: Boolean
+  abstract: String
+  speaker: ParticipantUpdateOneInput
+  authors: ParticipantUpdateManyInput
 }
 
-input WordUpdateManyMutationInput {
-  translation: String
-  writing: String
+input ContributionUpdateManyMutationInput {
+  title: String
+  oral: Boolean
+  abstract: String
 }
 
-input WordWhereInput {
+input ContributionWhereInput {
   """Logical AND on all given filters."""
-  AND: [WordWhereInput!]
+  AND: [ContributionWhereInput!]
 
   """Logical OR on all given filters."""
-  OR: [WordWhereInput!]
+  OR: [ContributionWhereInput!]
 
   """Logical NOT on all given filters combined by AND."""
-  NOT: [WordWhereInput!]
+  NOT: [ContributionWhereInput!]
   id: ID
 
   """All values that are not equal to given value."""
@@ -210,88 +169,674 @@ input WordWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  translation: String
+  title: String
 
   """All values that are not equal to given value."""
-  translation_not: String
+  title_not: String
 
   """All values that are contained in given list."""
-  translation_in: [String!]
+  title_in: [String!]
 
   """All values that are not contained in given list."""
-  translation_not_in: [String!]
+  title_not_in: [String!]
 
   """All values less than the given value."""
-  translation_lt: String
+  title_lt: String
 
   """All values less than or equal the given value."""
-  translation_lte: String
+  title_lte: String
 
   """All values greater than the given value."""
-  translation_gt: String
+  title_gt: String
 
   """All values greater than or equal the given value."""
-  translation_gte: String
+  title_gte: String
 
   """All values containing the given string."""
-  translation_contains: String
+  title_contains: String
 
   """All values not containing the given string."""
-  translation_not_contains: String
+  title_not_contains: String
 
   """All values starting with the given string."""
-  translation_starts_with: String
+  title_starts_with: String
 
   """All values not starting with the given string."""
-  translation_not_starts_with: String
+  title_not_starts_with: String
 
   """All values ending with the given string."""
-  translation_ends_with: String
+  title_ends_with: String
 
   """All values not ending with the given string."""
-  translation_not_ends_with: String
-  writing: String
+  title_not_ends_with: String
+  oral: Boolean
 
   """All values that are not equal to given value."""
-  writing_not: String
+  oral_not: Boolean
+  abstract: String
+
+  """All values that are not equal to given value."""
+  abstract_not: String
 
   """All values that are contained in given list."""
-  writing_in: [String!]
+  abstract_in: [String!]
 
   """All values that are not contained in given list."""
-  writing_not_in: [String!]
+  abstract_not_in: [String!]
 
   """All values less than the given value."""
-  writing_lt: String
+  abstract_lt: String
 
   """All values less than or equal the given value."""
-  writing_lte: String
+  abstract_lte: String
 
   """All values greater than the given value."""
-  writing_gt: String
+  abstract_gt: String
 
   """All values greater than or equal the given value."""
-  writing_gte: String
+  abstract_gte: String
 
   """All values containing the given string."""
-  writing_contains: String
+  abstract_contains: String
 
   """All values not containing the given string."""
-  writing_not_contains: String
+  abstract_not_contains: String
 
   """All values starting with the given string."""
-  writing_starts_with: String
+  abstract_starts_with: String
 
   """All values not starting with the given string."""
-  writing_not_starts_with: String
+  abstract_not_starts_with: String
 
   """All values ending with the given string."""
-  writing_ends_with: String
+  abstract_ends_with: String
 
   """All values not ending with the given string."""
-  writing_not_ends_with: String
+  abstract_not_ends_with: String
+  speaker: ParticipantWhereInput
+  authors_every: ParticipantWhereInput
+  authors_some: ParticipantWhereInput
+  authors_none: ParticipantWhereInput
 }
 
-input WordWhereUniqueInput {
+input ContributionWhereUniqueInput {
   id: ID
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createContribution(data: ContributionCreateInput!): Contribution!
+  createParticipant(data: ParticipantCreateInput!): Participant!
+  updateContribution(data: ContributionUpdateInput!, where: ContributionWhereUniqueInput!): Contribution
+  updateParticipant(data: ParticipantUpdateInput!, where: ParticipantWhereUniqueInput!): Participant
+  deleteContribution(where: ContributionWhereUniqueInput!): Contribution
+  deleteParticipant(where: ParticipantWhereUniqueInput!): Participant
+  upsertContribution(where: ContributionWhereUniqueInput!, create: ContributionCreateInput!, update: ContributionUpdateInput!): Contribution!
+  upsertParticipant(where: ParticipantWhereUniqueInput!, create: ParticipantCreateInput!, update: ParticipantUpdateInput!): Participant!
+  updateManyContributions(data: ContributionUpdateManyMutationInput!, where: ContributionWhereInput): BatchPayload!
+  updateManyParticipants(data: ParticipantUpdateManyMutationInput!, where: ParticipantWhereInput): BatchPayload!
+  deleteManyContributions(where: ContributionWhereInput): BatchPayload!
+  deleteManyParticipants(where: ParticipantWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Participant implements Node {
+  id: ID!
+  name: String!
+  title: String
+  email: String!
+}
+
+"""A connection to a list of items."""
+type ParticipantConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [ParticipantEdge]!
+  aggregate: AggregateParticipant!
+}
+
+input ParticipantCreateInput {
+  id: ID
+  name: String!
+  title: String
+  email: String!
+}
+
+input ParticipantCreateManyInput {
+  create: [ParticipantCreateInput!]
+  connect: [ParticipantWhereUniqueInput!]
+}
+
+input ParticipantCreateOneInput {
+  create: ParticipantCreateInput
+  connect: ParticipantWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type ParticipantEdge {
+  """The item at the end of the edge."""
+  node: Participant!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum ParticipantOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  title_ASC
+  title_DESC
+  email_ASC
+  email_DESC
+}
+
+type ParticipantPreviousValues {
+  id: ID!
+  name: String!
+  title: String
+  email: String!
+}
+
+input ParticipantScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ParticipantScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ParticipantScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ParticipantScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+}
+
+type ParticipantSubscriptionPayload {
+  mutation: MutationType!
+  node: Participant
+  updatedFields: [String!]
+  previousValues: ParticipantPreviousValues
+}
+
+input ParticipantSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ParticipantSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ParticipantSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ParticipantSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: ParticipantWhereInput
+}
+
+input ParticipantUpdateDataInput {
+  name: String
+  title: String
+  email: String
+}
+
+input ParticipantUpdateInput {
+  name: String
+  title: String
+  email: String
+}
+
+input ParticipantUpdateManyDataInput {
+  name: String
+  title: String
+  email: String
+}
+
+input ParticipantUpdateManyInput {
+  create: [ParticipantCreateInput!]
+  connect: [ParticipantWhereUniqueInput!]
+  set: [ParticipantWhereUniqueInput!]
+  disconnect: [ParticipantWhereUniqueInput!]
+  delete: [ParticipantWhereUniqueInput!]
+  update: [ParticipantUpdateWithWhereUniqueNestedInput!]
+  updateMany: [ParticipantUpdateManyWithWhereNestedInput!]
+  deleteMany: [ParticipantScalarWhereInput!]
+  upsert: [ParticipantUpsertWithWhereUniqueNestedInput!]
+}
+
+input ParticipantUpdateManyMutationInput {
+  name: String
+  title: String
+  email: String
+}
+
+input ParticipantUpdateManyWithWhereNestedInput {
+  where: ParticipantScalarWhereInput!
+  data: ParticipantUpdateManyDataInput!
+}
+
+input ParticipantUpdateOneInput {
+  create: ParticipantCreateInput
+  connect: ParticipantWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: ParticipantUpdateDataInput
+  upsert: ParticipantUpsertNestedInput
+}
+
+input ParticipantUpdateWithWhereUniqueNestedInput {
+  where: ParticipantWhereUniqueInput!
+  data: ParticipantUpdateDataInput!
+}
+
+input ParticipantUpsertNestedInput {
+  update: ParticipantUpdateDataInput!
+  create: ParticipantCreateInput!
+}
+
+input ParticipantUpsertWithWhereUniqueNestedInput {
+  where: ParticipantWhereUniqueInput!
+  update: ParticipantUpdateDataInput!
+  create: ParticipantCreateInput!
+}
+
+input ParticipantWhereInput {
+  """Logical AND on all given filters."""
+  AND: [ParticipantWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [ParticipantWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [ParticipantWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  title: String
+
+  """All values that are not equal to given value."""
+  title_not: String
+
+  """All values that are contained in given list."""
+  title_in: [String!]
+
+  """All values that are not contained in given list."""
+  title_not_in: [String!]
+
+  """All values less than the given value."""
+  title_lt: String
+
+  """All values less than or equal the given value."""
+  title_lte: String
+
+  """All values greater than the given value."""
+  title_gt: String
+
+  """All values greater than or equal the given value."""
+  title_gte: String
+
+  """All values containing the given string."""
+  title_contains: String
+
+  """All values not containing the given string."""
+  title_not_contains: String
+
+  """All values starting with the given string."""
+  title_starts_with: String
+
+  """All values not starting with the given string."""
+  title_not_starts_with: String
+
+  """All values ending with the given string."""
+  title_ends_with: String
+
+  """All values not ending with the given string."""
+  title_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+}
+
+input ParticipantWhereUniqueInput {
+  id: ID
+}
+
+type Query {
+  contributions(where: ContributionWhereInput, orderBy: ContributionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Contribution]!
+  participants(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Participant]!
+  contribution(where: ContributionWhereUniqueInput!): Contribution
+  participant(where: ParticipantWhereUniqueInput!): Participant
+  contributionsConnection(where: ContributionWhereInput, orderBy: ContributionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ContributionConnection!
+  participantsConnection(where: ParticipantWhereInput, orderBy: ParticipantOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ParticipantConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Subscription {
+  contribution(where: ContributionSubscriptionWhereInput): ContributionSubscriptionPayload
+  participant(where: ParticipantSubscriptionWhereInput): ParticipantSubscriptionPayload
 }

@@ -1,4 +1,3 @@
 export default {
-    getWord: require("./getWord.gql"),
-
+    uploadParticipants: require("./createParticipant.gql"),
 }

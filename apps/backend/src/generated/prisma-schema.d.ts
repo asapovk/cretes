@@ -1,12 +1,12 @@
 export type Maybe<T> = T | null;
 
-export interface WordWhereInput {
+export interface ContributionWhereInput {
   /** Logical AND on all given filters. */
-  AND?: Maybe<WordWhereInput[]>;
+  AND?: Maybe<ContributionWhereInput[]>;
   /** Logical OR on all given filters. */
-  OR?: Maybe<WordWhereInput[]>;
+  OR?: Maybe<ContributionWhereInput[]>;
   /** Logical NOT on all given filters combined by AND. */
-  NOT?: Maybe<WordWhereInput[]>;
+  NOT?: Maybe<ContributionWhereInput[]>;
 
   id?: Maybe<string>;
   /** All values that are not equal to given value. */
@@ -36,94 +36,480 @@ export interface WordWhereInput {
   /** All values not ending with the given string. */
   id_not_ends_with?: Maybe<string>;
 
-  translation?: Maybe<string>;
+  title?: Maybe<string>;
   /** All values that are not equal to given value. */
-  translation_not?: Maybe<string>;
+  title_not?: Maybe<string>;
   /** All values that are contained in given list. */
-  translation_in?: Maybe<string[]>;
+  title_in?: Maybe<string[]>;
   /** All values that are not contained in given list. */
-  translation_not_in?: Maybe<string[]>;
+  title_not_in?: Maybe<string[]>;
   /** All values less than the given value. */
-  translation_lt?: Maybe<string>;
+  title_lt?: Maybe<string>;
   /** All values less than or equal the given value. */
-  translation_lte?: Maybe<string>;
+  title_lte?: Maybe<string>;
   /** All values greater than the given value. */
-  translation_gt?: Maybe<string>;
+  title_gt?: Maybe<string>;
   /** All values greater than or equal the given value. */
-  translation_gte?: Maybe<string>;
+  title_gte?: Maybe<string>;
   /** All values containing the given string. */
-  translation_contains?: Maybe<string>;
+  title_contains?: Maybe<string>;
   /** All values not containing the given string. */
-  translation_not_contains?: Maybe<string>;
+  title_not_contains?: Maybe<string>;
   /** All values starting with the given string. */
-  translation_starts_with?: Maybe<string>;
+  title_starts_with?: Maybe<string>;
   /** All values not starting with the given string. */
-  translation_not_starts_with?: Maybe<string>;
+  title_not_starts_with?: Maybe<string>;
   /** All values ending with the given string. */
-  translation_ends_with?: Maybe<string>;
+  title_ends_with?: Maybe<string>;
   /** All values not ending with the given string. */
-  translation_not_ends_with?: Maybe<string>;
+  title_not_ends_with?: Maybe<string>;
 
-  writing?: Maybe<string>;
+  oral?: Maybe<boolean>;
   /** All values that are not equal to given value. */
-  writing_not?: Maybe<string>;
+  oral_not?: Maybe<boolean>;
+
+  abstract?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  abstract_not?: Maybe<string>;
   /** All values that are contained in given list. */
-  writing_in?: Maybe<string[]>;
+  abstract_in?: Maybe<string[]>;
   /** All values that are not contained in given list. */
-  writing_not_in?: Maybe<string[]>;
+  abstract_not_in?: Maybe<string[]>;
   /** All values less than the given value. */
-  writing_lt?: Maybe<string>;
+  abstract_lt?: Maybe<string>;
   /** All values less than or equal the given value. */
-  writing_lte?: Maybe<string>;
+  abstract_lte?: Maybe<string>;
   /** All values greater than the given value. */
-  writing_gt?: Maybe<string>;
+  abstract_gt?: Maybe<string>;
   /** All values greater than or equal the given value. */
-  writing_gte?: Maybe<string>;
+  abstract_gte?: Maybe<string>;
   /** All values containing the given string. */
-  writing_contains?: Maybe<string>;
+  abstract_contains?: Maybe<string>;
   /** All values not containing the given string. */
-  writing_not_contains?: Maybe<string>;
+  abstract_not_contains?: Maybe<string>;
   /** All values starting with the given string. */
-  writing_starts_with?: Maybe<string>;
+  abstract_starts_with?: Maybe<string>;
   /** All values not starting with the given string. */
-  writing_not_starts_with?: Maybe<string>;
+  abstract_not_starts_with?: Maybe<string>;
   /** All values ending with the given string. */
-  writing_ends_with?: Maybe<string>;
+  abstract_ends_with?: Maybe<string>;
   /** All values not ending with the given string. */
-  writing_not_ends_with?: Maybe<string>;
+  abstract_not_ends_with?: Maybe<string>;
+
+  speaker?: Maybe<ParticipantWhereInput>;
+
+  authors_every?: Maybe<ParticipantWhereInput>;
+
+  authors_some?: Maybe<ParticipantWhereInput>;
+
+  authors_none?: Maybe<ParticipantWhereInput>;
 }
 
-export interface WordWhereUniqueInput {
-  id?: Maybe<string>;
-}
-
-export interface WordCreateInput {
-  id?: Maybe<string>;
-
-  translation: string;
-
-  writing: string;
-}
-
-export interface WordUpdateInput {
-  translation?: Maybe<string>;
-
-  writing?: Maybe<string>;
-}
-
-export interface WordUpdateManyMutationInput {
-  translation?: Maybe<string>;
-
-  writing?: Maybe<string>;
-}
-
-export interface WordSubscriptionWhereInput {
+export interface ParticipantWhereInput {
   /** Logical AND on all given filters. */
-  AND?: Maybe<WordSubscriptionWhereInput[]>;
+  AND?: Maybe<ParticipantWhereInput[]>;
   /** Logical OR on all given filters. */
-  OR?: Maybe<WordSubscriptionWhereInput[]>;
+  OR?: Maybe<ParticipantWhereInput[]>;
   /** Logical NOT on all given filters combined by AND. */
-  NOT?: Maybe<WordSubscriptionWhereInput[]>;
+  NOT?: Maybe<ParticipantWhereInput[]>;
+
+  id?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<string>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<string[]>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<string[]>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<string>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<string>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<string>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<string>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<string>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<string>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<string>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<string>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<string>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<string>;
+
+  name?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  name_not?: Maybe<string>;
+  /** All values that are contained in given list. */
+  name_in?: Maybe<string[]>;
+  /** All values that are not contained in given list. */
+  name_not_in?: Maybe<string[]>;
+  /** All values less than the given value. */
+  name_lt?: Maybe<string>;
+  /** All values less than or equal the given value. */
+  name_lte?: Maybe<string>;
+  /** All values greater than the given value. */
+  name_gt?: Maybe<string>;
+  /** All values greater than or equal the given value. */
+  name_gte?: Maybe<string>;
+  /** All values containing the given string. */
+  name_contains?: Maybe<string>;
+  /** All values not containing the given string. */
+  name_not_contains?: Maybe<string>;
+  /** All values starting with the given string. */
+  name_starts_with?: Maybe<string>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: Maybe<string>;
+  /** All values ending with the given string. */
+  name_ends_with?: Maybe<string>;
+  /** All values not ending with the given string. */
+  name_not_ends_with?: Maybe<string>;
+
+  title?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  title_not?: Maybe<string>;
+  /** All values that are contained in given list. */
+  title_in?: Maybe<string[]>;
+  /** All values that are not contained in given list. */
+  title_not_in?: Maybe<string[]>;
+  /** All values less than the given value. */
+  title_lt?: Maybe<string>;
+  /** All values less than or equal the given value. */
+  title_lte?: Maybe<string>;
+  /** All values greater than the given value. */
+  title_gt?: Maybe<string>;
+  /** All values greater than or equal the given value. */
+  title_gte?: Maybe<string>;
+  /** All values containing the given string. */
+  title_contains?: Maybe<string>;
+  /** All values not containing the given string. */
+  title_not_contains?: Maybe<string>;
+  /** All values starting with the given string. */
+  title_starts_with?: Maybe<string>;
+  /** All values not starting with the given string. */
+  title_not_starts_with?: Maybe<string>;
+  /** All values ending with the given string. */
+  title_ends_with?: Maybe<string>;
+  /** All values not ending with the given string. */
+  title_not_ends_with?: Maybe<string>;
+
+  email?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  email_not?: Maybe<string>;
+  /** All values that are contained in given list. */
+  email_in?: Maybe<string[]>;
+  /** All values that are not contained in given list. */
+  email_not_in?: Maybe<string[]>;
+  /** All values less than the given value. */
+  email_lt?: Maybe<string>;
+  /** All values less than or equal the given value. */
+  email_lte?: Maybe<string>;
+  /** All values greater than the given value. */
+  email_gt?: Maybe<string>;
+  /** All values greater than or equal the given value. */
+  email_gte?: Maybe<string>;
+  /** All values containing the given string. */
+  email_contains?: Maybe<string>;
+  /** All values not containing the given string. */
+  email_not_contains?: Maybe<string>;
+  /** All values starting with the given string. */
+  email_starts_with?: Maybe<string>;
+  /** All values not starting with the given string. */
+  email_not_starts_with?: Maybe<string>;
+  /** All values ending with the given string. */
+  email_ends_with?: Maybe<string>;
+  /** All values not ending with the given string. */
+  email_not_ends_with?: Maybe<string>;
+}
+
+export interface ContributionWhereUniqueInput {
+  id?: Maybe<string>;
+}
+
+export interface ParticipantWhereUniqueInput {
+  id?: Maybe<string>;
+}
+
+export interface ContributionCreateInput {
+  id?: Maybe<string>;
+
+  title?: Maybe<string>;
+
+  oral?: Maybe<boolean>;
+
+  abstract?: Maybe<string>;
+
+  speaker?: Maybe<ParticipantCreateOneInput>;
+
+  authors?: Maybe<ParticipantCreateManyInput>;
+}
+
+export interface ParticipantCreateOneInput {
+  create?: Maybe<ParticipantCreateInput>;
+
+  connect?: Maybe<ParticipantWhereUniqueInput>;
+}
+
+export interface ParticipantCreateInput {
+  id?: Maybe<string>;
+
+  name: string;
+
+  title?: Maybe<string>;
+
+  email: string;
+}
+
+export interface ParticipantCreateManyInput {
+  create?: Maybe<ParticipantCreateInput[]>;
+
+  connect?: Maybe<ParticipantWhereUniqueInput[]>;
+}
+
+export interface ContributionUpdateInput {
+  title?: Maybe<string>;
+
+  oral?: Maybe<boolean>;
+
+  abstract?: Maybe<string>;
+
+  speaker?: Maybe<ParticipantUpdateOneInput>;
+
+  authors?: Maybe<ParticipantUpdateManyInput>;
+}
+
+export interface ParticipantUpdateOneInput {
+  create?: Maybe<ParticipantCreateInput>;
+
+  connect?: Maybe<ParticipantWhereUniqueInput>;
+
+  disconnect?: Maybe<boolean>;
+
+  delete?: Maybe<boolean>;
+
+  update?: Maybe<ParticipantUpdateDataInput>;
+
+  upsert?: Maybe<ParticipantUpsertNestedInput>;
+}
+
+export interface ParticipantUpdateDataInput {
+  name?: Maybe<string>;
+
+  title?: Maybe<string>;
+
+  email?: Maybe<string>;
+}
+
+export interface ParticipantUpsertNestedInput {
+  update: ParticipantUpdateDataInput;
+
+  create: ParticipantCreateInput;
+}
+
+export interface ParticipantUpdateManyInput {
+  create?: Maybe<ParticipantCreateInput[]>;
+
+  connect?: Maybe<ParticipantWhereUniqueInput[]>;
+
+  set?: Maybe<ParticipantWhereUniqueInput[]>;
+
+  disconnect?: Maybe<ParticipantWhereUniqueInput[]>;
+
+  delete?: Maybe<ParticipantWhereUniqueInput[]>;
+
+  update?: Maybe<ParticipantUpdateWithWhereUniqueNestedInput[]>;
+
+  updateMany?: Maybe<ParticipantUpdateManyWithWhereNestedInput[]>;
+
+  deleteMany?: Maybe<ParticipantScalarWhereInput[]>;
+
+  upsert?: Maybe<ParticipantUpsertWithWhereUniqueNestedInput[]>;
+}
+
+export interface ParticipantUpdateWithWhereUniqueNestedInput {
+  where: ParticipantWhereUniqueInput;
+
+  data: ParticipantUpdateDataInput;
+}
+
+export interface ParticipantUpdateManyWithWhereNestedInput {
+  where: ParticipantScalarWhereInput;
+
+  data: ParticipantUpdateManyDataInput;
+}
+
+export interface ParticipantScalarWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<ParticipantScalarWhereInput[]>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<ParticipantScalarWhereInput[]>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<ParticipantScalarWhereInput[]>;
+
+  id?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  id_not?: Maybe<string>;
+  /** All values that are contained in given list. */
+  id_in?: Maybe<string[]>;
+  /** All values that are not contained in given list. */
+  id_not_in?: Maybe<string[]>;
+  /** All values less than the given value. */
+  id_lt?: Maybe<string>;
+  /** All values less than or equal the given value. */
+  id_lte?: Maybe<string>;
+  /** All values greater than the given value. */
+  id_gt?: Maybe<string>;
+  /** All values greater than or equal the given value. */
+  id_gte?: Maybe<string>;
+  /** All values containing the given string. */
+  id_contains?: Maybe<string>;
+  /** All values not containing the given string. */
+  id_not_contains?: Maybe<string>;
+  /** All values starting with the given string. */
+  id_starts_with?: Maybe<string>;
+  /** All values not starting with the given string. */
+  id_not_starts_with?: Maybe<string>;
+  /** All values ending with the given string. */
+  id_ends_with?: Maybe<string>;
+  /** All values not ending with the given string. */
+  id_not_ends_with?: Maybe<string>;
+
+  name?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  name_not?: Maybe<string>;
+  /** All values that are contained in given list. */
+  name_in?: Maybe<string[]>;
+  /** All values that are not contained in given list. */
+  name_not_in?: Maybe<string[]>;
+  /** All values less than the given value. */
+  name_lt?: Maybe<string>;
+  /** All values less than or equal the given value. */
+  name_lte?: Maybe<string>;
+  /** All values greater than the given value. */
+  name_gt?: Maybe<string>;
+  /** All values greater than or equal the given value. */
+  name_gte?: Maybe<string>;
+  /** All values containing the given string. */
+  name_contains?: Maybe<string>;
+  /** All values not containing the given string. */
+  name_not_contains?: Maybe<string>;
+  /** All values starting with the given string. */
+  name_starts_with?: Maybe<string>;
+  /** All values not starting with the given string. */
+  name_not_starts_with?: Maybe<string>;
+  /** All values ending with the given string. */
+  name_ends_with?: Maybe<string>;
+  /** All values not ending with the given string. */
+  name_not_ends_with?: Maybe<string>;
+
+  title?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  title_not?: Maybe<string>;
+  /** All values that are contained in given list. */
+  title_in?: Maybe<string[]>;
+  /** All values that are not contained in given list. */
+  title_not_in?: Maybe<string[]>;
+  /** All values less than the given value. */
+  title_lt?: Maybe<string>;
+  /** All values less than or equal the given value. */
+  title_lte?: Maybe<string>;
+  /** All values greater than the given value. */
+  title_gt?: Maybe<string>;
+  /** All values greater than or equal the given value. */
+  title_gte?: Maybe<string>;
+  /** All values containing the given string. */
+  title_contains?: Maybe<string>;
+  /** All values not containing the given string. */
+  title_not_contains?: Maybe<string>;
+  /** All values starting with the given string. */
+  title_starts_with?: Maybe<string>;
+  /** All values not starting with the given string. */
+  title_not_starts_with?: Maybe<string>;
+  /** All values ending with the given string. */
+  title_ends_with?: Maybe<string>;
+  /** All values not ending with the given string. */
+  title_not_ends_with?: Maybe<string>;
+
+  email?: Maybe<string>;
+  /** All values that are not equal to given value. */
+  email_not?: Maybe<string>;
+  /** All values that are contained in given list. */
+  email_in?: Maybe<string[]>;
+  /** All values that are not contained in given list. */
+  email_not_in?: Maybe<string[]>;
+  /** All values less than the given value. */
+  email_lt?: Maybe<string>;
+  /** All values less than or equal the given value. */
+  email_lte?: Maybe<string>;
+  /** All values greater than the given value. */
+  email_gt?: Maybe<string>;
+  /** All values greater than or equal the given value. */
+  email_gte?: Maybe<string>;
+  /** All values containing the given string. */
+  email_contains?: Maybe<string>;
+  /** All values not containing the given string. */
+  email_not_contains?: Maybe<string>;
+  /** All values starting with the given string. */
+  email_starts_with?: Maybe<string>;
+  /** All values not starting with the given string. */
+  email_not_starts_with?: Maybe<string>;
+  /** All values ending with the given string. */
+  email_ends_with?: Maybe<string>;
+  /** All values not ending with the given string. */
+  email_not_ends_with?: Maybe<string>;
+}
+
+export interface ParticipantUpdateManyDataInput {
+  name?: Maybe<string>;
+
+  title?: Maybe<string>;
+
+  email?: Maybe<string>;
+}
+
+export interface ParticipantUpsertWithWhereUniqueNestedInput {
+  where: ParticipantWhereUniqueInput;
+
+  update: ParticipantUpdateDataInput;
+
+  create: ParticipantCreateInput;
+}
+
+export interface ParticipantUpdateInput {
+  name?: Maybe<string>;
+
+  title?: Maybe<string>;
+
+  email?: Maybe<string>;
+}
+
+export interface ContributionUpdateManyMutationInput {
+  title?: Maybe<string>;
+
+  oral?: Maybe<boolean>;
+
+  abstract?: Maybe<string>;
+}
+
+export interface ParticipantUpdateManyMutationInput {
+  name?: Maybe<string>;
+
+  title?: Maybe<string>;
+
+  email?: Maybe<string>;
+}
+
+export interface ContributionSubscriptionWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<ContributionSubscriptionWhereInput[]>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<ContributionSubscriptionWhereInput[]>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<ContributionSubscriptionWhereInput[]>;
   /** The subscription event gets dispatched when it's listed in mutation_in */
   mutation_in?: Maybe<MutationType[]>;
   /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
@@ -133,16 +519,47 @@ export interface WordSubscriptionWhereInput {
   /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
   updatedFields_contains_some?: Maybe<string[]>;
 
-  node?: Maybe<WordWhereInput>;
+  node?: Maybe<ContributionWhereInput>;
 }
 
-export type WordOrderByInput =
+export interface ParticipantSubscriptionWhereInput {
+  /** Logical AND on all given filters. */
+  AND?: Maybe<ParticipantSubscriptionWhereInput[]>;
+  /** Logical OR on all given filters. */
+  OR?: Maybe<ParticipantSubscriptionWhereInput[]>;
+  /** Logical NOT on all given filters combined by AND. */
+  NOT?: Maybe<ParticipantSubscriptionWhereInput[]>;
+  /** The subscription event gets dispatched when it's listed in mutation_in */
+  mutation_in?: Maybe<MutationType[]>;
+  /** The subscription event gets only dispatched when one of the updated fields names is included in this list */
+  updatedFields_contains?: Maybe<string>;
+  /** The subscription event gets only dispatched when all of the field names included in this list have been updated */
+  updatedFields_contains_every?: Maybe<string[]>;
+  /** The subscription event gets only dispatched when some of the field names included in this list have been updated */
+  updatedFields_contains_some?: Maybe<string[]>;
+
+  node?: Maybe<ParticipantWhereInput>;
+}
+
+export type ContributionOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "translation_ASC"
-  | "translation_DESC"
-  | "writing_ASC"
-  | "writing_DESC";
+  | "title_ASC"
+  | "title_DESC"
+  | "oral_ASC"
+  | "oral_DESC"
+  | "abstract_ASC"
+  | "abstract_DESC";
+
+export type ParticipantOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "email_ASC"
+  | "email_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -168,31 +585,53 @@ export interface Node {
 // ====================================================
 
 export interface Query {
-  words: (Maybe<Word>)[];
+  contributions: (Maybe<Contribution>)[];
 
-  word?: Maybe<Word>;
+  participants: (Maybe<Participant>)[];
 
-  wordsConnection: WordConnection;
+  contribution?: Maybe<Contribution>;
+
+  participant?: Maybe<Participant>;
+
+  contributionsConnection: ContributionConnection;
+
+  participantsConnection: ParticipantConnection;
   /** Fetches an object given its ID */
   node?: Maybe<Node>;
 }
 
-export interface Word extends Node {
+export interface Contribution extends Node {
   id: string;
 
-  translation: string;
+  speaker?: Maybe<Participant>;
 
-  writing: string;
+  authors?: Maybe<Participant[]>;
+
+  title?: Maybe<string>;
+
+  oral?: Maybe<boolean>;
+
+  abstract?: Maybe<string>;
+}
+
+export interface Participant extends Node {
+  id: string;
+
+  name: string;
+
+  title?: Maybe<string>;
+
+  email: string;
 }
 
 /** A connection to a list of items. */
-export interface WordConnection {
+export interface ContributionConnection {
   /** Information to aid in pagination. */
   pageInfo: PageInfo;
   /** A list of edges. */
-  edges: (Maybe<WordEdge>)[];
+  edges: (Maybe<ContributionEdge>)[];
 
-  aggregate: AggregateWord;
+  aggregate: AggregateContribution;
 }
 
 /** Information about pagination in a connection. */
@@ -208,29 +647,63 @@ export interface PageInfo {
 }
 
 /** An edge in a connection. */
-export interface WordEdge {
+export interface ContributionEdge {
   /** The item at the end of the edge. */
-  node: Word;
+  node: Contribution;
   /** A cursor for use in pagination. */
   cursor: string;
 }
 
-export interface AggregateWord {
+export interface AggregateContribution {
+  count: number;
+}
+
+/** A connection to a list of items. */
+export interface ParticipantConnection {
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** A list of edges. */
+  edges: (Maybe<ParticipantEdge>)[];
+
+  aggregate: AggregateParticipant;
+}
+
+/** An edge in a connection. */
+export interface ParticipantEdge {
+  /** The item at the end of the edge. */
+  node: Participant;
+  /** A cursor for use in pagination. */
+  cursor: string;
+}
+
+export interface AggregateParticipant {
   count: number;
 }
 
 export interface Mutation {
-  createWord: Word;
+  createContribution: Contribution;
 
-  updateWord?: Maybe<Word>;
+  createParticipant: Participant;
 
-  deleteWord?: Maybe<Word>;
+  updateContribution?: Maybe<Contribution>;
 
-  upsertWord: Word;
+  updateParticipant?: Maybe<Participant>;
 
-  updateManyWords: BatchPayload;
+  deleteContribution?: Maybe<Contribution>;
 
-  deleteManyWords: BatchPayload;
+  deleteParticipant?: Maybe<Participant>;
+
+  upsertContribution: Contribution;
+
+  upsertParticipant: Participant;
+
+  updateManyContributions: BatchPayload;
+
+  updateManyParticipants: BatchPayload;
+
+  deleteManyContributions: BatchPayload;
+
+  deleteManyParticipants: BatchPayload;
 }
 
 export interface BatchPayload {
@@ -239,35 +712,59 @@ export interface BatchPayload {
 }
 
 export interface Subscription {
-  word?: Maybe<WordSubscriptionPayload>;
+  contribution?: Maybe<ContributionSubscriptionPayload>;
+
+  participant?: Maybe<ParticipantSubscriptionPayload>;
 }
 
-export interface WordSubscriptionPayload {
+export interface ContributionSubscriptionPayload {
   mutation: MutationType;
 
-  node?: Maybe<Word>;
+  node?: Maybe<Contribution>;
 
   updatedFields?: Maybe<string[]>;
 
-  previousValues?: Maybe<WordPreviousValues>;
+  previousValues?: Maybe<ContributionPreviousValues>;
 }
 
-export interface WordPreviousValues {
+export interface ContributionPreviousValues {
   id: string;
 
-  translation: string;
+  title?: Maybe<string>;
 
-  writing: string;
+  oral?: Maybe<boolean>;
+
+  abstract?: Maybe<string>;
+}
+
+export interface ParticipantSubscriptionPayload {
+  mutation: MutationType;
+
+  node?: Maybe<Participant>;
+
+  updatedFields?: Maybe<string[]>;
+
+  previousValues?: Maybe<ParticipantPreviousValues>;
+}
+
+export interface ParticipantPreviousValues {
+  id: string;
+
+  name: string;
+
+  title?: Maybe<string>;
+
+  email: string;
 }
 
 // ====================================================
 // Arguments
 // ====================================================
 
-export interface WordsQueryArgs {
-  where?: Maybe<WordWhereInput>;
+export interface ContributionsQueryArgs {
+  where?: Maybe<ContributionWhereInput>;
 
-  orderBy?: Maybe<WordOrderByInput>;
+  orderBy?: Maybe<ContributionOrderByInput>;
 
   skip?: Maybe<number>;
 
@@ -279,13 +776,46 @@ export interface WordsQueryArgs {
 
   last?: Maybe<number>;
 }
-export interface WordQueryArgs {
-  where: WordWhereUniqueInput;
-}
-export interface WordsConnectionQueryArgs {
-  where?: Maybe<WordWhereInput>;
+export interface ParticipantsQueryArgs {
+  where?: Maybe<ParticipantWhereInput>;
 
-  orderBy?: Maybe<WordOrderByInput>;
+  orderBy?: Maybe<ParticipantOrderByInput>;
+
+  skip?: Maybe<number>;
+
+  after?: Maybe<string>;
+
+  before?: Maybe<string>;
+
+  first?: Maybe<number>;
+
+  last?: Maybe<number>;
+}
+export interface ContributionQueryArgs {
+  where: ContributionWhereUniqueInput;
+}
+export interface ParticipantQueryArgs {
+  where: ParticipantWhereUniqueInput;
+}
+export interface ContributionsConnectionQueryArgs {
+  where?: Maybe<ContributionWhereInput>;
+
+  orderBy?: Maybe<ContributionOrderByInput>;
+
+  skip?: Maybe<number>;
+
+  after?: Maybe<string>;
+
+  before?: Maybe<string>;
+
+  first?: Maybe<number>;
+
+  last?: Maybe<number>;
+}
+export interface ParticipantsConnectionQueryArgs {
+  where?: Maybe<ParticipantWhereInput>;
+
+  orderBy?: Maybe<ParticipantOrderByInput>;
 
   skip?: Maybe<number>;
 
@@ -301,32 +831,76 @@ export interface NodeQueryArgs {
   /** The ID of an object */
   id: string;
 }
-export interface CreateWordMutationArgs {
-  data: WordCreateInput;
-}
-export interface UpdateWordMutationArgs {
-  data: WordUpdateInput;
+export interface AuthorsContributionArgs {
+  where?: Maybe<ParticipantWhereInput>;
 
-  where: WordWhereUniqueInput;
-}
-export interface DeleteWordMutationArgs {
-  where: WordWhereUniqueInput;
-}
-export interface UpsertWordMutationArgs {
-  where: WordWhereUniqueInput;
+  orderBy?: Maybe<ParticipantOrderByInput>;
 
-  create: WordCreateInput;
+  skip?: Maybe<number>;
 
-  update: WordUpdateInput;
-}
-export interface UpdateManyWordsMutationArgs {
-  data: WordUpdateManyMutationInput;
+  after?: Maybe<string>;
 
-  where?: Maybe<WordWhereInput>;
+  before?: Maybe<string>;
+
+  first?: Maybe<number>;
+
+  last?: Maybe<number>;
 }
-export interface DeleteManyWordsMutationArgs {
-  where?: Maybe<WordWhereInput>;
+export interface CreateContributionMutationArgs {
+  data: ContributionCreateInput;
 }
-export interface WordSubscriptionArgs {
-  where?: Maybe<WordSubscriptionWhereInput>;
+export interface CreateParticipantMutationArgs {
+  data: ParticipantCreateInput;
+}
+export interface UpdateContributionMutationArgs {
+  data: ContributionUpdateInput;
+
+  where: ContributionWhereUniqueInput;
+}
+export interface UpdateParticipantMutationArgs {
+  data: ParticipantUpdateInput;
+
+  where: ParticipantWhereUniqueInput;
+}
+export interface DeleteContributionMutationArgs {
+  where: ContributionWhereUniqueInput;
+}
+export interface DeleteParticipantMutationArgs {
+  where: ParticipantWhereUniqueInput;
+}
+export interface UpsertContributionMutationArgs {
+  where: ContributionWhereUniqueInput;
+
+  create: ContributionCreateInput;
+
+  update: ContributionUpdateInput;
+}
+export interface UpsertParticipantMutationArgs {
+  where: ParticipantWhereUniqueInput;
+
+  create: ParticipantCreateInput;
+
+  update: ParticipantUpdateInput;
+}
+export interface UpdateManyContributionsMutationArgs {
+  data: ContributionUpdateManyMutationInput;
+
+  where?: Maybe<ContributionWhereInput>;
+}
+export interface UpdateManyParticipantsMutationArgs {
+  data: ParticipantUpdateManyMutationInput;
+
+  where?: Maybe<ParticipantWhereInput>;
+}
+export interface DeleteManyContributionsMutationArgs {
+  where?: Maybe<ContributionWhereInput>;
+}
+export interface DeleteManyParticipantsMutationArgs {
+  where?: Maybe<ParticipantWhereInput>;
+}
+export interface ContributionSubscriptionArgs {
+  where?: Maybe<ContributionSubscriptionWhereInput>;
+}
+export interface ParticipantSubscriptionArgs {
+  where?: Maybe<ParticipantSubscriptionWhereInput>;
 }

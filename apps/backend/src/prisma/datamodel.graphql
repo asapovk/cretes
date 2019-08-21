@@ -1,6 +1,15 @@
-type Word {
+type Participant {
   id: ID! @id
-  translation: String!
-  writing: String! 
-  synonims: [Word]
+  name: String!
+  title: String 
+  email: String!
+}
+
+type Contribution {
+  id: ID! @id
+  speaker: Participant  @relation(name: "SpeakerContribution" )
+  authors: [Participant] @relation(name: "AuthorsContribution" )
+  title: String
+  oral: Boolean
+  abstract: String
 }

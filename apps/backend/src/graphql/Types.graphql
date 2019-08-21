@@ -1,8 +1,7 @@
 
-
-type Word {
-    wordId: String!
-    translation: String!
-    writing: String!
-    synonims: [Word]
+type Participant {
+  id: String!
+  name: String!
+  title: String 
+  email: String!
 }

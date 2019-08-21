@@ -16,7 +16,8 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
-  word: (where?: WordWhereInput) => Promise<boolean>;
+  contribution: (where?: ContributionWhereInput) => Promise<boolean>;
+  participant: (where?: ParticipantWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -38,47 +39,92 @@ export interface Prisma {
    * Queries
    */
 
-  word: (where: WordWhereUniqueInput) => WordNullablePromise;
-  words: (args?: {
-    where?: WordWhereInput;
-    orderBy?: WordOrderByInput;
+  contribution: (
+    where: ContributionWhereUniqueInput
+  ) => ContributionNullablePromise;
+  contributions: (args?: {
+    where?: ContributionWhereInput;
+    orderBy?: ContributionOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<Word>;
-  wordsConnection: (args?: {
-    where?: WordWhereInput;
-    orderBy?: WordOrderByInput;
+  }) => FragmentableArray<Contribution>;
+  contributionsConnection: (args?: {
+    where?: ContributionWhereInput;
+    orderBy?: ContributionOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => WordConnectionPromise;
+  }) => ContributionConnectionPromise;
+  participant: (
+    where: ParticipantWhereUniqueInput
+  ) => ParticipantNullablePromise;
+  participants: (args?: {
+    where?: ParticipantWhereInput;
+    orderBy?: ParticipantOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Participant>;
+  participantsConnection: (args?: {
+    where?: ParticipantWhereInput;
+    orderBy?: ParticipantOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ParticipantConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
    * Mutations
    */
 
-  createWord: (data: WordCreateInput) => WordPromise;
-  updateWord: (args: {
-    data: WordUpdateInput;
-    where: WordWhereUniqueInput;
-  }) => WordPromise;
-  updateManyWords: (args: {
-    data: WordUpdateManyMutationInput;
-    where?: WordWhereInput;
+  createContribution: (data: ContributionCreateInput) => ContributionPromise;
+  updateContribution: (args: {
+    data: ContributionUpdateInput;
+    where: ContributionWhereUniqueInput;
+  }) => ContributionPromise;
+  updateManyContributions: (args: {
+    data: ContributionUpdateManyMutationInput;
+    where?: ContributionWhereInput;
   }) => BatchPayloadPromise;
-  upsertWord: (args: {
-    where: WordWhereUniqueInput;
-    create: WordCreateInput;
-    update: WordUpdateInput;
-  }) => WordPromise;
-  deleteWord: (where: WordWhereUniqueInput) => WordPromise;
-  deleteManyWords: (where?: WordWhereInput) => BatchPayloadPromise;
+  upsertContribution: (args: {
+    where: ContributionWhereUniqueInput;
+    create: ContributionCreateInput;
+    update: ContributionUpdateInput;
+  }) => ContributionPromise;
+  deleteContribution: (
+    where: ContributionWhereUniqueInput
+  ) => ContributionPromise;
+  deleteManyContributions: (
+    where?: ContributionWhereInput
+  ) => BatchPayloadPromise;
+  createParticipant: (data: ParticipantCreateInput) => ParticipantPromise;
+  updateParticipant: (args: {
+    data: ParticipantUpdateInput;
+    where: ParticipantWhereUniqueInput;
+  }) => ParticipantPromise;
+  updateManyParticipants: (args: {
+    data: ParticipantUpdateManyMutationInput;
+    where?: ParticipantWhereInput;
+  }) => BatchPayloadPromise;
+  upsertParticipant: (args: {
+    where: ParticipantWhereUniqueInput;
+    create: ParticipantCreateInput;
+    update: ParticipantUpdateInput;
+  }) => ParticipantPromise;
+  deleteParticipant: (where: ParticipantWhereUniqueInput) => ParticipantPromise;
+  deleteManyParticipants: (
+    where?: ParticipantWhereInput
+  ) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -88,9 +134,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  word: (
-    where?: WordSubscriptionWhereInput
-  ) => WordSubscriptionPayloadSubscription;
+  contribution: (
+    where?: ContributionSubscriptionWhereInput
+  ) => ContributionSubscriptionPayloadSubscription;
+  participant: (
+    where?: ParticipantSubscriptionWhereInput
+  ) => ParticipantSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -101,21 +150,33 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type WordOrderByInput =
+export type ParticipantOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "translation_ASC"
-  | "translation_DESC"
-  | "writing_ASC"
-  | "writing_DESC";
+  | "name_ASC"
+  | "name_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "email_ASC"
+  | "email_DESC";
+
+export type ContributionOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "oral_ASC"
+  | "oral_DESC"
+  | "abstract_ASC"
+  | "abstract_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type WordWhereUniqueInput = AtLeastOne<{
+export type ContributionWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface WordWhereInput {
+export interface ParticipantWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -130,98 +191,202 @@ export interface WordWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  translation?: Maybe<String>;
-  translation_not?: Maybe<String>;
-  translation_in?: Maybe<String[] | String>;
-  translation_not_in?: Maybe<String[] | String>;
-  translation_lt?: Maybe<String>;
-  translation_lte?: Maybe<String>;
-  translation_gt?: Maybe<String>;
-  translation_gte?: Maybe<String>;
-  translation_contains?: Maybe<String>;
-  translation_not_contains?: Maybe<String>;
-  translation_starts_with?: Maybe<String>;
-  translation_not_starts_with?: Maybe<String>;
-  translation_ends_with?: Maybe<String>;
-  translation_not_ends_with?: Maybe<String>;
-  writing?: Maybe<String>;
-  writing_not?: Maybe<String>;
-  writing_in?: Maybe<String[] | String>;
-  writing_not_in?: Maybe<String[] | String>;
-  writing_lt?: Maybe<String>;
-  writing_lte?: Maybe<String>;
-  writing_gt?: Maybe<String>;
-  writing_gte?: Maybe<String>;
-  writing_contains?: Maybe<String>;
-  writing_not_contains?: Maybe<String>;
-  writing_starts_with?: Maybe<String>;
-  writing_not_starts_with?: Maybe<String>;
-  writing_ends_with?: Maybe<String>;
-  writing_not_ends_with?: Maybe<String>;
-  synonims_every?: Maybe<WordWhereInput>;
-  synonims_some?: Maybe<WordWhereInput>;
-  synonims_none?: Maybe<WordWhereInput>;
-  AND?: Maybe<WordWhereInput[] | WordWhereInput>;
-  OR?: Maybe<WordWhereInput[] | WordWhereInput>;
-  NOT?: Maybe<WordWhereInput[] | WordWhereInput>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ParticipantWhereInput[] | ParticipantWhereInput>;
+  OR?: Maybe<ParticipantWhereInput[] | ParticipantWhereInput>;
+  NOT?: Maybe<ParticipantWhereInput[] | ParticipantWhereInput>;
 }
 
-export interface WordCreateInput {
+export interface ContributionWhereInput {
   id?: Maybe<ID_Input>;
-  translation: String;
-  writing: String;
-  synonims?: Maybe<WordCreateManyInput>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  speaker?: Maybe<ParticipantWhereInput>;
+  authors_every?: Maybe<ParticipantWhereInput>;
+  authors_some?: Maybe<ParticipantWhereInput>;
+  authors_none?: Maybe<ParticipantWhereInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  oral?: Maybe<Boolean>;
+  oral_not?: Maybe<Boolean>;
+  abstract?: Maybe<String>;
+  abstract_not?: Maybe<String>;
+  abstract_in?: Maybe<String[] | String>;
+  abstract_not_in?: Maybe<String[] | String>;
+  abstract_lt?: Maybe<String>;
+  abstract_lte?: Maybe<String>;
+  abstract_gt?: Maybe<String>;
+  abstract_gte?: Maybe<String>;
+  abstract_contains?: Maybe<String>;
+  abstract_not_contains?: Maybe<String>;
+  abstract_starts_with?: Maybe<String>;
+  abstract_not_starts_with?: Maybe<String>;
+  abstract_ends_with?: Maybe<String>;
+  abstract_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ContributionWhereInput[] | ContributionWhereInput>;
+  OR?: Maybe<ContributionWhereInput[] | ContributionWhereInput>;
+  NOT?: Maybe<ContributionWhereInput[] | ContributionWhereInput>;
 }
 
-export interface WordCreateManyInput {
-  create?: Maybe<WordCreateInput[] | WordCreateInput>;
-  connect?: Maybe<WordWhereUniqueInput[] | WordWhereUniqueInput>;
+export type ParticipantWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ContributionCreateInput {
+  id?: Maybe<ID_Input>;
+  speaker?: Maybe<ParticipantCreateOneInput>;
+  authors?: Maybe<ParticipantCreateManyInput>;
+  title?: Maybe<String>;
+  oral?: Maybe<Boolean>;
+  abstract?: Maybe<String>;
 }
 
-export interface WordUpdateInput {
-  translation?: Maybe<String>;
-  writing?: Maybe<String>;
-  synonims?: Maybe<WordUpdateManyInput>;
+export interface ParticipantCreateOneInput {
+  create?: Maybe<ParticipantCreateInput>;
+  connect?: Maybe<ParticipantWhereUniqueInput>;
 }
 
-export interface WordUpdateManyInput {
-  create?: Maybe<WordCreateInput[] | WordCreateInput>;
+export interface ParticipantCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  title?: Maybe<String>;
+  email: String;
+}
+
+export interface ParticipantCreateManyInput {
+  create?: Maybe<ParticipantCreateInput[] | ParticipantCreateInput>;
+  connect?: Maybe<ParticipantWhereUniqueInput[] | ParticipantWhereUniqueInput>;
+}
+
+export interface ContributionUpdateInput {
+  speaker?: Maybe<ParticipantUpdateOneInput>;
+  authors?: Maybe<ParticipantUpdateManyInput>;
+  title?: Maybe<String>;
+  oral?: Maybe<Boolean>;
+  abstract?: Maybe<String>;
+}
+
+export interface ParticipantUpdateOneInput {
+  create?: Maybe<ParticipantCreateInput>;
+  update?: Maybe<ParticipantUpdateDataInput>;
+  upsert?: Maybe<ParticipantUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<ParticipantWhereUniqueInput>;
+}
+
+export interface ParticipantUpdateDataInput {
+  name?: Maybe<String>;
+  title?: Maybe<String>;
+  email?: Maybe<String>;
+}
+
+export interface ParticipantUpsertNestedInput {
+  update: ParticipantUpdateDataInput;
+  create: ParticipantCreateInput;
+}
+
+export interface ParticipantUpdateManyInput {
+  create?: Maybe<ParticipantCreateInput[] | ParticipantCreateInput>;
   update?: Maybe<
-    | WordUpdateWithWhereUniqueNestedInput[]
-    | WordUpdateWithWhereUniqueNestedInput
+    | ParticipantUpdateWithWhereUniqueNestedInput[]
+    | ParticipantUpdateWithWhereUniqueNestedInput
   >;
   upsert?: Maybe<
-    | WordUpsertWithWhereUniqueNestedInput[]
-    | WordUpsertWithWhereUniqueNestedInput
+    | ParticipantUpsertWithWhereUniqueNestedInput[]
+    | ParticipantUpsertWithWhereUniqueNestedInput
   >;
-  delete?: Maybe<WordWhereUniqueInput[] | WordWhereUniqueInput>;
-  connect?: Maybe<WordWhereUniqueInput[] | WordWhereUniqueInput>;
-  set?: Maybe<WordWhereUniqueInput[] | WordWhereUniqueInput>;
-  disconnect?: Maybe<WordWhereUniqueInput[] | WordWhereUniqueInput>;
-  deleteMany?: Maybe<WordScalarWhereInput[] | WordScalarWhereInput>;
+  delete?: Maybe<ParticipantWhereUniqueInput[] | ParticipantWhereUniqueInput>;
+  connect?: Maybe<ParticipantWhereUniqueInput[] | ParticipantWhereUniqueInput>;
+  set?: Maybe<ParticipantWhereUniqueInput[] | ParticipantWhereUniqueInput>;
+  disconnect?: Maybe<
+    ParticipantWhereUniqueInput[] | ParticipantWhereUniqueInput
+  >;
+  deleteMany?: Maybe<
+    ParticipantScalarWhereInput[] | ParticipantScalarWhereInput
+  >;
   updateMany?: Maybe<
-    WordUpdateManyWithWhereNestedInput[] | WordUpdateManyWithWhereNestedInput
+    | ParticipantUpdateManyWithWhereNestedInput[]
+    | ParticipantUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface WordUpdateWithWhereUniqueNestedInput {
-  where: WordWhereUniqueInput;
-  data: WordUpdateDataInput;
+export interface ParticipantUpdateWithWhereUniqueNestedInput {
+  where: ParticipantWhereUniqueInput;
+  data: ParticipantUpdateDataInput;
 }
 
-export interface WordUpdateDataInput {
-  translation?: Maybe<String>;
-  writing?: Maybe<String>;
-  synonims?: Maybe<WordUpdateManyInput>;
+export interface ParticipantUpsertWithWhereUniqueNestedInput {
+  where: ParticipantWhereUniqueInput;
+  update: ParticipantUpdateDataInput;
+  create: ParticipantCreateInput;
 }
 
-export interface WordUpsertWithWhereUniqueNestedInput {
-  where: WordWhereUniqueInput;
-  update: WordUpdateDataInput;
-  create: WordCreateInput;
-}
-
-export interface WordScalarWhereInput {
+export interface ParticipantScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -236,143 +401,235 @@ export interface WordScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  translation?: Maybe<String>;
-  translation_not?: Maybe<String>;
-  translation_in?: Maybe<String[] | String>;
-  translation_not_in?: Maybe<String[] | String>;
-  translation_lt?: Maybe<String>;
-  translation_lte?: Maybe<String>;
-  translation_gt?: Maybe<String>;
-  translation_gte?: Maybe<String>;
-  translation_contains?: Maybe<String>;
-  translation_not_contains?: Maybe<String>;
-  translation_starts_with?: Maybe<String>;
-  translation_not_starts_with?: Maybe<String>;
-  translation_ends_with?: Maybe<String>;
-  translation_not_ends_with?: Maybe<String>;
-  writing?: Maybe<String>;
-  writing_not?: Maybe<String>;
-  writing_in?: Maybe<String[] | String>;
-  writing_not_in?: Maybe<String[] | String>;
-  writing_lt?: Maybe<String>;
-  writing_lte?: Maybe<String>;
-  writing_gt?: Maybe<String>;
-  writing_gte?: Maybe<String>;
-  writing_contains?: Maybe<String>;
-  writing_not_contains?: Maybe<String>;
-  writing_starts_with?: Maybe<String>;
-  writing_not_starts_with?: Maybe<String>;
-  writing_ends_with?: Maybe<String>;
-  writing_not_ends_with?: Maybe<String>;
-  AND?: Maybe<WordScalarWhereInput[] | WordScalarWhereInput>;
-  OR?: Maybe<WordScalarWhereInput[] | WordScalarWhereInput>;
-  NOT?: Maybe<WordScalarWhereInput[] | WordScalarWhereInput>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ParticipantScalarWhereInput[] | ParticipantScalarWhereInput>;
+  OR?: Maybe<ParticipantScalarWhereInput[] | ParticipantScalarWhereInput>;
+  NOT?: Maybe<ParticipantScalarWhereInput[] | ParticipantScalarWhereInput>;
 }
 
-export interface WordUpdateManyWithWhereNestedInput {
-  where: WordScalarWhereInput;
-  data: WordUpdateManyDataInput;
+export interface ParticipantUpdateManyWithWhereNestedInput {
+  where: ParticipantScalarWhereInput;
+  data: ParticipantUpdateManyDataInput;
 }
 
-export interface WordUpdateManyDataInput {
-  translation?: Maybe<String>;
-  writing?: Maybe<String>;
+export interface ParticipantUpdateManyDataInput {
+  name?: Maybe<String>;
+  title?: Maybe<String>;
+  email?: Maybe<String>;
 }
 
-export interface WordUpdateManyMutationInput {
-  translation?: Maybe<String>;
-  writing?: Maybe<String>;
+export interface ContributionUpdateManyMutationInput {
+  title?: Maybe<String>;
+  oral?: Maybe<Boolean>;
+  abstract?: Maybe<String>;
 }
 
-export interface WordSubscriptionWhereInput {
+export interface ParticipantUpdateInput {
+  name?: Maybe<String>;
+  title?: Maybe<String>;
+  email?: Maybe<String>;
+}
+
+export interface ParticipantUpdateManyMutationInput {
+  name?: Maybe<String>;
+  title?: Maybe<String>;
+  email?: Maybe<String>;
+}
+
+export interface ContributionSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
   updatedFields_contains_every?: Maybe<String[] | String>;
   updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<WordWhereInput>;
-  AND?: Maybe<WordSubscriptionWhereInput[] | WordSubscriptionWhereInput>;
-  OR?: Maybe<WordSubscriptionWhereInput[] | WordSubscriptionWhereInput>;
-  NOT?: Maybe<WordSubscriptionWhereInput[] | WordSubscriptionWhereInput>;
+  node?: Maybe<ContributionWhereInput>;
+  AND?: Maybe<
+    ContributionSubscriptionWhereInput[] | ContributionSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ContributionSubscriptionWhereInput[] | ContributionSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ContributionSubscriptionWhereInput[] | ContributionSubscriptionWhereInput
+  >;
+}
+
+export interface ParticipantSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ParticipantWhereInput>;
+  AND?: Maybe<
+    ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ParticipantSubscriptionWhereInput[] | ParticipantSubscriptionWhereInput
+  >;
 }
 
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface Word {
+export interface Contribution {
   id: ID_Output;
-  translation: String;
-  writing: String;
+  title?: String;
+  oral?: Boolean;
+  abstract?: String;
 }
 
-export interface WordPromise extends Promise<Word>, Fragmentable {
+export interface ContributionPromise
+  extends Promise<Contribution>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  translation: () => Promise<String>;
-  writing: () => Promise<String>;
-  synonims: <T = FragmentableArray<Word>>(args?: {
-    where?: WordWhereInput;
-    orderBy?: WordOrderByInput;
+  speaker: <T = ParticipantPromise>() => T;
+  authors: <T = FragmentableArray<Participant>>(args?: {
+    where?: ParticipantWhereInput;
+    orderBy?: ParticipantOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+  title: () => Promise<String>;
+  oral: () => Promise<Boolean>;
+  abstract: () => Promise<String>;
 }
 
-export interface WordSubscription
-  extends Promise<AsyncIterator<Word>>,
+export interface ContributionSubscription
+  extends Promise<AsyncIterator<Contribution>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  translation: () => Promise<AsyncIterator<String>>;
-  writing: () => Promise<AsyncIterator<String>>;
-  synonims: <T = Promise<AsyncIterator<WordSubscription>>>(args?: {
-    where?: WordWhereInput;
-    orderBy?: WordOrderByInput;
+  speaker: <T = ParticipantSubscription>() => T;
+  authors: <T = Promise<AsyncIterator<ParticipantSubscription>>>(args?: {
+    where?: ParticipantWhereInput;
+    orderBy?: ParticipantOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+  title: () => Promise<AsyncIterator<String>>;
+  oral: () => Promise<AsyncIterator<Boolean>>;
+  abstract: () => Promise<AsyncIterator<String>>;
 }
 
-export interface WordNullablePromise
-  extends Promise<Word | null>,
+export interface ContributionNullablePromise
+  extends Promise<Contribution | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  translation: () => Promise<String>;
-  writing: () => Promise<String>;
-  synonims: <T = FragmentableArray<Word>>(args?: {
-    where?: WordWhereInput;
-    orderBy?: WordOrderByInput;
+  speaker: <T = ParticipantPromise>() => T;
+  authors: <T = FragmentableArray<Participant>>(args?: {
+    where?: ParticipantWhereInput;
+    orderBy?: ParticipantOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
   }) => T;
+  title: () => Promise<String>;
+  oral: () => Promise<Boolean>;
+  abstract: () => Promise<String>;
 }
 
-export interface WordConnection {
+export interface Participant {
+  id: ID_Output;
+  name: String;
+  title?: String;
+  email: String;
+}
+
+export interface ParticipantPromise extends Promise<Participant>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  title: () => Promise<String>;
+  email: () => Promise<String>;
+}
+
+export interface ParticipantSubscription
+  extends Promise<AsyncIterator<Participant>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  title: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ParticipantNullablePromise
+  extends Promise<Participant | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  title: () => Promise<String>;
+  email: () => Promise<String>;
+}
+
+export interface ContributionConnection {
   pageInfo: PageInfo;
-  edges: WordEdge[];
+  edges: ContributionEdge[];
 }
 
-export interface WordConnectionPromise
-  extends Promise<WordConnection>,
+export interface ContributionConnectionPromise
+  extends Promise<ContributionConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<WordEdge>>() => T;
-  aggregate: <T = AggregateWordPromise>() => T;
+  edges: <T = FragmentableArray<ContributionEdge>>() => T;
+  aggregate: <T = AggregateContributionPromise>() => T;
 }
 
-export interface WordConnectionSubscription
-  extends Promise<AsyncIterator<WordConnection>>,
+export interface ContributionConnectionSubscription
+  extends Promise<AsyncIterator<ContributionConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<WordEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateWordSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ContributionEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateContributionSubscription>() => T;
 }
 
 export interface PageInfo {
@@ -398,35 +655,93 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface WordEdge {
-  node: Word;
+export interface ContributionEdge {
+  node: Contribution;
   cursor: String;
 }
 
-export interface WordEdgePromise extends Promise<WordEdge>, Fragmentable {
-  node: <T = WordPromise>() => T;
+export interface ContributionEdgePromise
+  extends Promise<ContributionEdge>,
+    Fragmentable {
+  node: <T = ContributionPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface WordEdgeSubscription
-  extends Promise<AsyncIterator<WordEdge>>,
+export interface ContributionEdgeSubscription
+  extends Promise<AsyncIterator<ContributionEdge>>,
     Fragmentable {
-  node: <T = WordSubscription>() => T;
+  node: <T = ContributionSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateWord {
+export interface AggregateContribution {
   count: Int;
 }
 
-export interface AggregateWordPromise
-  extends Promise<AggregateWord>,
+export interface AggregateContributionPromise
+  extends Promise<AggregateContribution>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateWordSubscription
-  extends Promise<AsyncIterator<AggregateWord>>,
+export interface AggregateContributionSubscription
+  extends Promise<AsyncIterator<AggregateContribution>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ParticipantConnection {
+  pageInfo: PageInfo;
+  edges: ParticipantEdge[];
+}
+
+export interface ParticipantConnectionPromise
+  extends Promise<ParticipantConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ParticipantEdge>>() => T;
+  aggregate: <T = AggregateParticipantPromise>() => T;
+}
+
+export interface ParticipantConnectionSubscription
+  extends Promise<AsyncIterator<ParticipantConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ParticipantEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateParticipantSubscription>() => T;
+}
+
+export interface ParticipantEdge {
+  node: Participant;
+  cursor: String;
+}
+
+export interface ParticipantEdgePromise
+  extends Promise<ParticipantEdge>,
+    Fragmentable {
+  node: <T = ParticipantPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ParticipantEdgeSubscription
+  extends Promise<AsyncIterator<ParticipantEdge>>,
+    Fragmentable {
+  node: <T = ParticipantSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateParticipant {
+  count: Int;
+}
+
+export interface AggregateParticipantPromise
+  extends Promise<AggregateParticipant>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateParticipantSubscription
+  extends Promise<AsyncIterator<AggregateParticipant>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -447,51 +762,104 @@ export interface BatchPayloadSubscription
   count: () => Promise<AsyncIterator<Long>>;
 }
 
-export interface WordSubscriptionPayload {
+export interface ContributionSubscriptionPayload {
   mutation: MutationType;
-  node: Word;
+  node: Contribution;
   updatedFields: String[];
-  previousValues: WordPreviousValues;
+  previousValues: ContributionPreviousValues;
 }
 
-export interface WordSubscriptionPayloadPromise
-  extends Promise<WordSubscriptionPayload>,
+export interface ContributionSubscriptionPayloadPromise
+  extends Promise<ContributionSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = WordPromise>() => T;
+  node: <T = ContributionPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = WordPreviousValuesPromise>() => T;
+  previousValues: <T = ContributionPreviousValuesPromise>() => T;
 }
 
-export interface WordSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<WordSubscriptionPayload>>,
+export interface ContributionSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ContributionSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = WordSubscription>() => T;
+  node: <T = ContributionSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = WordPreviousValuesSubscription>() => T;
+  previousValues: <T = ContributionPreviousValuesSubscription>() => T;
 }
 
-export interface WordPreviousValues {
+export interface ContributionPreviousValues {
   id: ID_Output;
-  translation: String;
-  writing: String;
+  title?: String;
+  oral?: Boolean;
+  abstract?: String;
 }
 
-export interface WordPreviousValuesPromise
-  extends Promise<WordPreviousValues>,
+export interface ContributionPreviousValuesPromise
+  extends Promise<ContributionPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  translation: () => Promise<String>;
-  writing: () => Promise<String>;
+  title: () => Promise<String>;
+  oral: () => Promise<Boolean>;
+  abstract: () => Promise<String>;
 }
 
-export interface WordPreviousValuesSubscription
-  extends Promise<AsyncIterator<WordPreviousValues>>,
+export interface ContributionPreviousValuesSubscription
+  extends Promise<AsyncIterator<ContributionPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  translation: () => Promise<AsyncIterator<String>>;
-  writing: () => Promise<AsyncIterator<String>>;
+  title: () => Promise<AsyncIterator<String>>;
+  oral: () => Promise<AsyncIterator<Boolean>>;
+  abstract: () => Promise<AsyncIterator<String>>;
+}
+
+export interface ParticipantSubscriptionPayload {
+  mutation: MutationType;
+  node: Participant;
+  updatedFields: String[];
+  previousValues: ParticipantPreviousValues;
+}
+
+export interface ParticipantSubscriptionPayloadPromise
+  extends Promise<ParticipantSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ParticipantPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ParticipantPreviousValuesPromise>() => T;
+}
+
+export interface ParticipantSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ParticipantSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ParticipantSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ParticipantPreviousValuesSubscription>() => T;
+}
+
+export interface ParticipantPreviousValues {
+  id: ID_Output;
+  name: String;
+  title?: String;
+  email: String;
+}
+
+export interface ParticipantPreviousValuesPromise
+  extends Promise<ParticipantPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  title: () => Promise<String>;
+  email: () => Promise<String>;
+}
+
+export interface ParticipantPreviousValuesSubscription
+  extends Promise<AsyncIterator<ParticipantPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  title: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
 }
 
 /*
@@ -523,7 +891,11 @@ export type Long = string;
 
 export const models: Model[] = [
   {
-    name: "Word",
+    name: "Participant",
+    embedded: false
+  },
+  {
+    name: "Contribution",
     embedded: false
   }
 ];
@@ -535,6 +907,6 @@ export const models: Model[] = [
 export const Prisma = makePrismaClientClass<ClientConstructor<Prisma>>({
   typeDefs,
   models,
-  endpoint: `http://localhost:4466`
+  endpoint: `http://localhost:4467`
 });
 export const prisma = new Prisma();

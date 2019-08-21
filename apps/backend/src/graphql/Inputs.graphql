@@ -1,17 +1,20 @@
 #
-# Word
+# Participant
 #
-input WordCreateInput {
-    translation: String!
-    writing: String!
-}
-input WordUpdateInput {
-    wordId: String!
-    translation: String
-    writing: String
+input ParticipantCreateInput {
+    name: String!
+    email: String!
+    title: String 
 }
 
-input WordDeleteInput {
-    wordId: Int!
+input ParticipantUpdateInput {
+    id: String!
+    name: String
+    email: String
+    title: String 
+}
+
+input ParticipantDeleteInput {
+    id: Int!
 }
 
