@@ -8,6 +8,5 @@ type Query {
 }
 
 type Mutation {
- 
     createParticipant(input: ParticipantCreateInput!): Participant! 
 }
